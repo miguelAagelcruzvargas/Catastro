@@ -1,0 +1,56 @@
+/* Estilo general del sidebar */
+.sidebar {
+    width: 220px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #343a40;
+    padding-top: 20px;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.sidebar a {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #c2c7d0;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.sidebar i {
+    margin-right: 10px;
+}
+
+.submenu {
+    padding-left: 20px;
+}
+
+.submenu-arrow {
+    float: right;
+    transition: transform 0.3s ease;
+}
+
+.rotated {
+    transform: rotate(180deg);
+}
+
+/* Estilo para la parte principal */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}

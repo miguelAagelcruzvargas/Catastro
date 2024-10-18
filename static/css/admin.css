@@ -1,0 +1,128 @@
+body {
+    background-color: #f1f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    margin: 20px auto;
+    max-width: 700px;
+    padding: 20px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    border: none;
+}
+
+h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #004085;
+    text-align: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.form-control {
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+}
+
+.summary {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+#total {
+    font-size: 1.5rem;
+    color: #28a745;
+    font-weight: 700;
+}
+
+/* Style for Resumen del Pago */
+#resumenPago {
+    background-color: #fdfdfd;
+    border: 1px solid #cfd8dc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#resumenPago:hover {
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+#resumenPago h3 {
+    color: #0056b3;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#resumenPago p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+#resumenPago span {
+    font-weight: 700;
+    color: #0056b3;
+}
+
+.btn {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    margin-right: 15px;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Observaciones - ajustar tamaño */
+#observaciones {
+    width: 100%;  /* Ocupa todo el ancho disponible */
+    height: 150px; /* Ajusta la altura */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 10px;  /* Espaciado interno */
+    font-size: 1rem;  /* Tamaño de letra */
+    border: 2px solid #d1d5db; /* Borde suave */
+}
+
+
+#contadorCaracteres {
+    display: block;
+    margin-top: 5px;
+    color: #000; /* Color normal */
+}
+
+#contadorCaracteres.limite {
+    color: red; /* Cambia a rojo al alcanzar el límite */
+}

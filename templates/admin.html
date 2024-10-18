@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Flatpickr Locale Español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Impuesto Predial</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 CDN -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h3 class="text-center">Formulario de Impuesto Predial</h3>
+            <form id="predialForm" onsubmit="return validarFormulario()">
+                <!-- Aquí comienza el formulario correctamente -->
+
+
+                <!-- Información General -->
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="cuenta_contable">Cuenta Contable*:</label>
+                        <input type="text" id="cuenta_contable" name="cuenta_contable" class="form-control"
+                            value="4-01-002-0001-00001" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="descripcion">Descripción*:</label>
+                        <input type="text" id="descripcion" name="descripcion" class="form-control"
+                            value="Impuesto Predial Corriente" required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="periodo">Período*:</label>
+                        <input type="text" id="periodo" name="periodo" class="form-control"
+                            value="2024 Período Enero-Diciembre" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="importe">Importe*:</label>
+                        <input type="text" id="importe" name="importe" class="form-control" value="$0.00"
+                            onfocus="limpiarImporte()" onblur="restaurarImporte()" oninput="calcularDescuento()"
+                            onkeydown="return soloNumerosYDecimal(event)" required>
+                    </div>
+
+
+
+
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="tipo_descuento">Tipo de Descuento:</label>
+                        <select id="tipo_descuento" name="tipo_descuento" class="form-control"
+                            onchange="calcularDescuento()">
+                            <option value="porcentaje">Porcentaje (%)</option>
+                            <option value="monto">Monto Fijo ($)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="valor_descuento">Valor del Descuento:</label>
+                        <input type="text" id="valor_descuento" name="valor_descuento" class="form-control"
+                            oninput="calcularDescuento()" onkeydown="return soloNumerosYDecimal(event)">
+                    </div>
+
+
+                </div>
+
+                <!-- Mostrar Subtotal, Descuento y Total -->
+                <div class="form-group row summary">
+                    <div class="col-md-4">
+                        <label for="subtotal">Subtotal:</label>
+                        <input type="text" id="subtotal" name="subtotal" class="form-control" value="$0.00" readonly>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="descuento">Descuento:</label>
+                        <input type="text" id="descuento" name="descuento" class="form-control" value="$0.00" readonly>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="total">Total:</label>
+                        <input type="text" id="total" name="total" class="form-control" value="$0.00" readonly>
+                    </div>
+                </div>
+
+
+                <!-- Fecha y Observaciones -->
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="fecha_pago">Fecha de Pago*:</label>
+                        <input type="text" id="fecha_pago" name="fecha_pago" class="form-control"
+                            placeholder="DD/MM/YYYY" required>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="observaciones">Observaciones:</label>
+                    <textarea id="observaciones" name="observaciones" class="form-control"
+                        placeholder="Ingrese sus observaciones" maxlength="250" style="resize: none;"
+                        oninput="actualizarContador()"></textarea>
+                    <small id="contadorCaracteres">0/250</small>
+                </div>
+
+
+
+                <!-- Botón de Pago -->
+                <div class="text-right" style="margin-top: 10px;">
+                    <button type="submit" class="btn btn-primary">Registrar Pago</button>
+                </div>
+
+            </form>
+
+            <!-- Resumen del Pago -->
+            <div id="resumenPago" style="display: none;">
+                <h3>Resumen del Pago</h3>
+                <p><strong>Cuenta Contable:</strong> <span id="resumenCuenta"></span></p>
+                <p><strong>Descripción:</strong> <span id="resumenDescripcion"></span></p>
+                <p><strong>Período:</strong> <span id="resumenPeriodo"></span></p>
+                <p><strong>Importe:</strong> $<span id="resumenImporte"></span></p>
+                <p><strong>Subtotal:</strong> $<span id="resumenSubtotal"></span></p>
+                <p><strong>Descuento:</strong> $<span id="resumenDescuento"></span></p>
+                <p><strong>Total:</strong> $<span id="resumenTotal"></span></p>
+                <p><strong>Fecha de Pago:</strong> <span id="resumenFecha"></span></p>
+                <p><strong>Observaciones:</strong> <span id="resumenObservaciones"></span></p>
+
+                <!-- Botones de Confirmar y Editar -->
+                <button type="button" class="btn btn-success" onclick="confirmarPago()">Confirmar Pago</button>
+                <button type="button" class="btn btn-secondary" onclick="editarPago()">Editar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Inicialización de Flatpickr -->
+    <script>
+        flatpickr("#fecha_pago", {
+            locale: "es", // Establece el idioma español
+            dateFormat: "d/m/Y", // Formato de fecha día/mes/año
+            altInput: true,
+            altFormat: "d/m/Y",
+            placeholder: "DD/MM/YYYY"
+        });
+
+
+        function calcularDescuento() {
+            const importeField = document.getElementById("importe");
+            const valorDescuentoField = document.getElementById("valor_descuento");
+            const tipoDescuento = document.getElementById("tipo_descuento").value;
+
+            // Obtener el valor numérico del importe y del descuento, y asignar 0 si están vacíos
+            let importe = parseFloat(importeField.value.replace(/[^0-9.-]+/g, "")) || 0;
+            let valorDescuento = parseFloat(valorDescuentoField.value.replace(/[^0-9.-]+/g, "")) || 0;  // Asignar 0 si está vacío
+
+            let descuento = 0;
+
+            // Cálculo del descuento basado en el tipo seleccionado
+            if (tipoDescuento === "porcentaje") {
+                descuento = (valorDescuento / 100) * importe;
+            } else if (tipoDescuento === "monto") {
+                descuento = valorDescuento;
+            }
+
+            // Asegurarse de que el descuento no sea mayor que el importe
+            if (descuento > importe) {
+                descuento = importe;
+                alert("El descuento no puede ser mayor que el importe.");
+            }
+
+            let total = importe - descuento;
+
+            // Actualizar los campos de subtotal, descuento y total con formato de moneda
+            document.getElementById("subtotal").value = "$" + importe.toLocaleString("en-US", { minimumFractionDigits: 2 });
+            document.getElementById("descuento").value = "$" + descuento.toLocaleString("en-US", { minimumFractionDigits: 2 });
+            document.getElementById("total").value = "$" + total.toLocaleString("en-US", { minimumFractionDigits: 2 });
+        }
+
+
+
+        // Función para limpiar el valor cuando se enfoca el campo de importe
+        function limpiarImporte() {
+            const importeField = document.getElementById("importe");
+            if (importeField.value === "$0.00") {
+                importeField.value = "";
+            } else {
+                // Elimina las comas para editar el valor
+                importeField.value = importeField.value.replace(/,/g, '').replace('$', '').trim();
+            }
+        }
+
+        // Función para restaurar el formato de importe al perder el foco
+        function restaurarImporte() {
+            const importeField = document.getElementById("importe");
+            let importe = parseFloat(importeField.value.replace(/,/g, '')) || 0;
+
+            // Restaurar el valor con el formato de comas
+            importeField.value = "$" + importe.toLocaleString("en-US", { minimumFractionDigits: 2 });
+        }
+
+        function soloNumerosYDecimal(e) {
+            // Obtener el valor de la tecla presionada
+            const tecla = e.key;
+            const valorInput = e.target.value;
+
+            // Permitir números (0-9), un punto (.) si aún no existe, y teclas especiales como Backspace
+            const numeros = /^[0-9]$/;
+            const especiales = ["Backspace", "Tab", "ArrowLeft", "ArrowRight", "Delete"];
+
+            // Validar si es una tecla especial
+            if (especiales.includes(tecla)) {
+                return true;
+            }
+
+            // Permitir el punto decimal solo una vez
+            if (tecla === "." && !valorInput.includes(".")) {
+                return true;
+            }
+
+            // Permitir solo números
+            if (numeros.test(tecla)) {
+                return true;
+            }
+
+            // Si no es un número o un carácter permitido, evitar su ingreso
+            return false;
+        }
+
+
+        // Función para actualizar los cálculos cuando cambien los campos relevantes
+        function actualizarCalculos() {
+            document.getElementById("importe").addEventListener("input", calcularDescuento);
+            document.getElementById("valor_descuento").addEventListener("input", calcularDescuento);
+            document.getElementById("tipo_descuento").addEventListener("change", calcularDescuento);
+        }
+
+        // Llamar a la función al cargar la página
+        window.onload = actualizarCalculos;
+
+
+    </script>
+
+</body>
+
+</html>

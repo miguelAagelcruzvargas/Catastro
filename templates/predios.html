@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predios - Administración</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Menú</h2>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="#">Administración</a>
+        <a href="#" id="usuarios-menu">Usuarios</a>
+        <div id="usuarios-submenu" class="submenu">
+            <a href="{{ url_for('contribuyentes') }}">Contribuyente</a>
+            <a href="{{ url_for('predios') }}">Predio</a>
+        </div>
+        <a href="{{ url_for('empleados') }}">Empleados</a>
+    </div>
+    <div class="main-content container mt-4">
+        <div class="header mb-4">
+            <button id="menu-toggle" class="btn btn-primary">☰</button>
+            <div class="logo">LOGO</div>
+            <div class="company-name">Nombre de la Empresa</div>
+        </div>
+        <div class="mb-4">
+            <h1>Gestión de Predios</h1>
+            <div class="d-flex mb-3">
+                <input type="text" id="search" class="form-control mr-2" placeholder="Buscar predios por RFC...">
+                <button id="btn-add" class="btn btn-success mr-2">Agregar Predio</button>
+            </div>
+
+            <table class="table table-striped" id="predios-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>RFC</th>
+                        <th>Nombre</th>
+                        <th>Apellido paterno</th>
+                        <th>Apellido materno</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for predio in predios %}
+                    <tr data-id="{{ predio._id }}">
+                        <td>{{ predio.rfc }}</td>
+                        <td>{{ predio.nombre }}</td>
+                        <td>{{ predio.ape_paterno }}</td>
+                        <td>{{ predio.ape_materno }}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm view-btn">Ver</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para agregar predio -->
+    <div class="modal fade" id="predioModal" tabindex="-1" role="dialog" aria-labelledby="predioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="predioModalLabel">Agregar Predio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="predio-form">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="rfc">RFC</label>
+                                <input type="text" class="form-control" id="rfc" name="rfc" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="clave_catastral">Clave Catastral</label>
+                                <input type="text" class="form-control" id="clave_catastral" name="clave_catastral" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="padron">Padrón</label>
+                                <input type="text" class="form-control" id="padron" name="padron" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="cuenta_catastral">Cuenta Catastral</label>
+                                <input type="text" class="form-control" id="cuenta_catastral" name="cuenta_catastral" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ubicacion_predio">Ubicación del Predio</label>
+                                <input type="text" class="form-control" id="ubicacion_predio" name="ubicacion_predio" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="cp_predio">CP del Predio</label>
+                                <input type="text" class="form-control" id="cp_predio" name="cp_predio" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="base_gravable">Base Gravable</label>
+                                <input type="text" class="form-control" id="base_gravable" name="base_gravable" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="superficie_construccion">Superficie Construcción</label>
+                                <input type="text" class="form-control" id="superficie_contruccion" name="superficie_contruccion" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="superficie_terreno">Superficie Terreno</label>
+                                <input type="text" class="form-control" id="superficie_terreno" name="superficie_terreno" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="fecha_celebracion">Fecha de Celebración</label>
+                                <input type="date" class="form-control" id="fecha_celebracion" name="fecha_celebracion" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/predios.js') }}"></script>
+    <script>
+        // Mostrar el submenú al hacer clic en "Usuarios"
+        document.getElementById('usuarios-menu').addEventListener('click', function() {
+            const submenu = document.getElementById('usuarios-submenu');
+            submenu.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

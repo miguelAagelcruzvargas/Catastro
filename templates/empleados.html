@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados - Administración</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Menú</h2>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="#">Administración</a>
+        <a href="#" id="usuarios-menu">Usuarios</a>
+        <div id="usuarios-submenu" class="submenu">
+            <a href="{{ url_for('contribuyentes') }}">Contribuyente</a>
+            <a href="{{ url_for('predios') }}">Predio</a>
+        </div>
+        <a href="{{ url_for('empleados') }}">Empleados</a>
+    </div>
+    <div class="main-content container mt-4">
+        <div class="header mb-4">
+            <button id="menu-toggle" class="btn btn-primary">☰</button>
+            <div class="logo">LOGO</div>
+            <div class="company-name">Nombre de la Empresa</div>
+        </div>
+        <div class="mb-4">
+            <h1>Gestión de Empleados</h1>
+            <div class="d-flex mb-3">
+                <input type="text" id="search" class="form-control mr-2" placeholder="Buscar empleados por nombre o RFC...">
+                <button id="btn-add" class="btn btn-success mr-2">Agregar Empleado</button>
+            </div>
+
+            <table class="table table-striped" id="empleados-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>RFC</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Caja</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empleado in empleados %}
+                    <tr data-id="{{ empleado._id }}">
+                        <td>{{ empleado.rfc }}</td>
+                        <td>{{ empleado.nombre }}</td>
+                        <td>{{ empleado.ape_paterno }}</td>
+                        <td>{{ empleado.ape_materno }}</td>
+                        <td>{{ empleado.caja }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm edit-btn">Editar</button>
+                            <button class="btn btn-danger btn-sm delete-btn">Eliminar</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar empleado -->
+    <div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="employeeModalLabel">Agregar Empleado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="employee-form">
+                        <div class="form-group">
+                            <label for="rfc">RFC</label>
+                            <input type="text" class="form-control" id="rfc" name="rfc" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ape_paterno">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="ape_paterno" name="ape_paterno" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ape_materno">Apellido Materno</label>
+                            <input type="text" class="form-control" id="ape_materno" name="ape_materno" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="caja">Caja</label>
+                            <input type="number" class="form-control" id="caja" name="caja" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/empleados.js') }}"></script>
+    <script>
+        // Mostrar el submenú al hacer clic en "Usuarios"
+        document.getElementById('usuarios-menu').addEventListener('click', function() {
+            const submenu = document.getElementById('usuarios-submenu');
+            submenu.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

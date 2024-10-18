@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catastral - Administración</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Menú</h2>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('admin') }}" class="btn btn-primary">Administración</a>
+
+        <a href="#" id="usuarios-menu">Usuarios</a>
+        <div id="usuarios-submenu" class="submenu">
+            <a href="{{ url_for('contribuyentes') }}">Contribuyente</a>
+            <a href="{{ url_for('predios') }}">Predio</a>
+        </div>
+        <a href="{{ url_for('empleados') }}">Empleados</a>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <button id="menu-toggle">☰</button>
+            <div class="logo">LOGO</div>
+            <div class="company-name">Nombre de la Empresa</div>
+        </div>
+        <!-- Aquí irá el contenido principal -->
+        <div>
+            <h1>Bienvenido al Sistema Catastral</h1>
+            <p>Este es el panel de administración donde podrá gestionar la información.</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mostrar el submenú al hacer clic en "Usuarios"
+        document.getElementById('usuarios-menu').addEventListener('click', function() {
+            const submenu = document.getElementById('usuarios-submenu');
+            submenu.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Predio</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Editar Predio</h1>
+        <form id="edit-predio-form">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="rfc">RFC</label>
+                    <input type="text" class="form-control" id="rfc" name="rfc" value="{{ predio.rfc }}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="clave_catastral">Clave Catastral</label>
+                    <input type="text" class="form-control" id="clave_catastral" name="clave_catastral" value="{{ predio.clave_catastral }}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="padron">Padrón</label>
+                    <input type="text" class="form-control" id="padron" name="padron" value="{{ predio.padron }}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cuenta_catastral">Cuenta Catastral</label>
+                    <input type="text" class="form-control" id="cuenta_catastral" name="cuenta_catastral" value="{{ predio.cuenta_catastral }}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="ubicacion_predio">Ubicación del Predio</label>
+                    <input type="text" class="form-control" id="ubicacion_predio" name="ubicacion_predio" value="{{ predio.ubicacion_predio }}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cp_predio">CP del Predio</label>
+                    <input type="text" class="form-control" id="cp_predio" name="cp_predio" value="{{ predio.cp_predio }}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="base_gravable">Base Gravable</label>
+                    <input type="text" class="form-control" id="base_gravable" name="base_gravable" value="{{ predio.base_gravable }}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="superficie_contruccion">Superficie Construcción</label>
+                    <input type="text" class="form-control" id="superficie_contruccion" name="superficie_contruccion" value="{{ predio.superficie_contruccion }}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="superficie_terreno">Superficie Terreno</label>
+                    <input type="text" class="form-control" id="superficie_terreno" name="superficie_terreno" value="{{ predio.superficie_terreno }}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fecha_celebracion">Fecha de Celebración</label>
+                    <input type="date" class="form-control" id="fecha_celebracion" name="fecha_celebracion" value="{{ predio.fecha_celebracion }}" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('edit-predio-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const id = "{{ predio._id }}";
+            const data = {
+                rfc: document.getElementById('rfc').value.trim(),
+                clave_catastral: document.getElementById('clave_catastral').value.trim(),
+                padron: document.getElementById('padron').value.trim(),
+                cuenta_catastral: document.getElementById('cuenta_catastral').value.trim(),
+                ubicacion_predio: document.getElementById('ubicacion_predio').value.trim(),
+                cp_predio: document.getElementById('cp_predio').value.trim(),
+                base_gravable: document.getElementById('base_gravable').value.trim(),
+                superficie_contruccion: document.getElementById('superficie_contruccion').value.trim(),
+                superficie_terreno: document.getElementById('superficie_terreno').value.trim(),
+                fecha_celebracion: document.getElementById('fecha_celebracion').value
+            };
+
+            fetch(`/update_predio/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(() => {
+                alert('Predio actualizado');
+                window.location.href = `/ver_predios/${data.rfc}`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

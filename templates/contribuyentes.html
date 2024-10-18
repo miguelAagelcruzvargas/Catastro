@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contribuyentes - Administración</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h2>Menú</h2>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="#">Administración</a>
+        <a href="#" id="usuarios-menu">Usuarios</a>
+        <div id="usuarios-submenu" class="submenu">
+            <a href="{{ url_for('contribuyentes') }}">Contribuyente</a>
+            <a href="{{ url_for('predios') }}">Predio</a>
+        </div>
+        <a href="{{ url_for('empleados') }}">Empleados</a>
+    </div>
+    <div class="main-content container mt-4">
+        <div class="header mb-4">
+            <button id="menu-toggle" class="btn btn-primary">☰</button>
+            <div class="logo">LOGO</div>
+            <div class="company-name">Nombre de la Empresa</div>
+        </div>
+        <div class="mb-4">
+            <h1>Gestión de Contribuyentes</h1>
+            <div class="d-flex mb-3">
+                <input type="text" id="search" class="form-control mr-2" placeholder="Buscar contribuyentes...">
+                <button id="btn-add" class="btn btn-success mr-2">Agregar Contribuyente</button>
+            </div>
+
+            <table class="table table-striped" id="contribuyentes-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>RFC</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Domicilio</th>
+                        <th>Localidad</th>
+                        <th>CP</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contribuyente in contribuyentes %}
+                    <tr data-id="{{ contribuyente._id }}">
+                        <td>{{ contribuyente.rfc }}</td>
+                        <td>{{ contribuyente.nombre }}</td>
+                        <td>{{ contribuyente.ape_paterno }}</td>
+                        <td>{{ contribuyente.ape_materno }}</td>
+                        <td>{{ contribuyente.domicilio }}</td>
+                        <td>{{ contribuyente.localidad }}</td>
+                        <td>{{ contribuyente.cp }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm edit-btn">Editar</button>
+                            <button class="btn btn-danger btn-sm delete-btn">Eliminar</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar contribuyente -->
+<div class="modal fade" id="contribuyenteModal" tabindex="-1" role="dialog" aria-labelledby="contribuyenteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contribuyenteModalLabel">Agregar Contribuyente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="contribuyente-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ape_paterno">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="ape_paterno" name="ape_paterno" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ape_materno">Apellido Materno</label>
+                            <input type="text" class="form-control" id="ape_materno" name="ape_materno" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="domicilio">Domicilio</label>
+                            <input type="text" class="form-control" id="domicilio" name="domicilio" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="rfc">RFC</label>
+                            <input type="text" class="form-control" id="rfc" name="rfc" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="localidad">Localidad</label>
+                            <input type="text" class="form-control" id="localidad" name="localidad" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="cp">CP</label>
+                            <input type="text" class="form-control" id="cp" name="cp" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/contribuyentes.js') }}"></script>
+    <script>
+        // Mostrar el submenú al hacer clic en "Usuarios"
+        document.getElementById('usuarios-menu').addEventListener('click', function() {
+            const submenu = document.getElementById('usuarios-submenu');
+            submenu.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

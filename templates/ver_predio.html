@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Predios</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Predios Asociados al RFC: {{ rfc }}</h1>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Clave Catastral</th>
+                    <th>Padrón</th>
+                    <th>Cuenta Catastral</th>
+                    <th>Ubicación</th>
+                    <th>CP</th>
+                    <th>Base gravable</th>
+                    <th>Superficie de Construcción</th>
+                    <th>Superficie de terreno</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for predio in predios %}
+                <tr>
+                    <td>{{ predio.clave_catastral }}</td>
+                    <td>{{ predio.padron }}</td>
+                    <td>{{ predio.cuenta_catastral }}</td>
+                    <td>{{ predio.ubicacion_predio }}</td>
+                    <td>{{ predio.cp_predio }}</td>
+                    <td>{{ predio.base_gravable }}</td>
+                    <td>{{ predio.superficie_contruccion }}</td>
+                    <td>{{ predio.superficie_terreno }}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm edit-btn" data-id="{{ predio._id }}">Editar</button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="{{ predio._id }}">Eliminar</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('predios') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                if (confirm('¿Estás seguro de que deseas eliminar este predio?')) {
+                    fetch(`/delete_predio/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        alert('Predio eliminado');
+                        location.reload();
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                window.location.href = `/editar_predio/${id}`;
+            });
+        });
+    </script>
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                if (confirm('¿Estás seguro de que deseas eliminar este predio?')) {
+                    fetch(`/delete_predio/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        alert('Predio eliminado');
+                        location.reload();
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                window.location.href = `/editar_predio/${id}`;
+            });
+        });
+    </script>
+    
+</body>
+</html>
